@@ -25,7 +25,7 @@
 
 body{
     font-family:Arial,sans-serif;
-    background:url('suy.JPG') center center / cover no-repeat fixed;
+    background:#ffffff;
     padding:20px;
     color:#222;
     overflow-x:hidden;
@@ -196,7 +196,7 @@ textarea{
 
 .footer{
     text-align:center;
-    color:white;
+    color:#111827;
     margin-top:30px;
     font-size:14px;
 }
@@ -207,8 +207,8 @@ textarea{
 
 <body>
 
-<video id='bgVideo' autoplay loop playsinline>
-    <source src='chill.mp4' type='video/mp4'>
+<video id="bgVideo" loop playsinline>
+    <source src="chill.mp4" type="video/mp4">
 </video>
 
 <div class="container">
@@ -283,17 +283,11 @@ Lựa chon bởi con tim nghen sai là đỏ đấy
 let parsedQuestions = [];
 let correctCount = 0;
 
-const bgVideo=document.getElementById('bgVideo');
-const videoBtn=document.getElementById('videoBtn');
+const bgVideo=document.getElementById("bgVideo");
+const videoBtn=document.getElementById("videoBtn");
 
 bgVideo.volume=1;
-bgVideo.muted=true;
-
-document.body.addEventListener('click',()=>{
-
-    bgVideo.muted=false;
-
-},{once:true});
+bgVideo.muted=false;
 
 function toggleVideo(){
 
@@ -315,7 +309,7 @@ function toggleVideo(){
 
         bgVideo.pause();
 
-        document.body.style.background="url('suy.png') center center / cover no-repeat fixed";
+        document.body.style.background="#ffffff";
 
         videoBtn.innerText="Bật Nền";
 
