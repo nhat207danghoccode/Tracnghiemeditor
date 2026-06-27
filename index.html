@@ -1,0 +1,596 @@
+```html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Trắc Nghiệm Hóa Sinh - Tạo Đề Trắc Nghiệm @Nhat2007</title>
+
+<style>
+
+:root{
+    --main:#2563eb;
+    --main-dark:#1d4ed8;
+    --success:#22c55e;
+    --error:#ef4444;
+    --bg:#f1f5f9;
+    --dark:#111827;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#000;
+    padding:20px;
+    color:#222;
+    overflow-x:hidden;
+}
+
+
+
+#bgVideo{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-2;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:-1;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+}
+
+.header{
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(5px);
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 4px 20px rgba(0,0,0,.15);
+    margin-bottom:20px;
+}
+
+.header h1{
+    font-size:32px;
+    color:var(--dark);
+    margin-bottom:10px;
+}
+
+.creator{
+    color:#666;
+    font-size:15px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.stats{
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(5px);
+    padding:15px 20px;
+    border-radius:14px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    font-weight:bold;
+    font-size:16px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    background:var(--main);
+    color:white;
+    padding:12px 20px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:bold;
+    transition:.2s;
+}
+
+.btn:hover{
+    background:var(--main-dark);
+    transform:translateY(-2px);
+}
+
+.btn.gray{
+    background:#64748b;
+}
+
+.btn.gray:hover{
+    background:#475569;
+}
+
+#input-area{
+    display:none;
+    margin-bottom:25px;
+}
+
+textarea{
+    width:100%;
+    min-height:250px;
+    border:none;
+    border-radius:18px;
+    padding:20px;
+    font-size:15px;
+    resize:vertical;
+    box-shadow:0 4px 20px rgba(0,0,0,.08);
+    outline:none;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(5px);
+}
+
+.question{
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(5px);
+    padding:22px;
+    border-radius:18px;
+    margin-bottom:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.1);
+}
+
+.question-title{
+    font-size:18px;
+    font-weight:bold;
+    color:#111827;
+    margin-bottom:18px;
+    line-height:1.5;
+}
+
+.options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.option{
+    border:2px solid #e5e7eb;
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    transition:.2s;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:white;
+}
+
+.option:hover{
+    background:#f8fafc;
+}
+
+.option.correct{
+    background:#dcfce7;
+    border-color:var(--success);
+    color:#166534;
+    font-weight:bold;
+}
+
+.option.wrong{
+    background:#fee2e2;
+    border-color:var(--error);
+    color:#991b1b;
+    font-weight:bold;
+}
+
+.option input{
+    transform:scale(1.2);
+}
+
+.footer{
+    text-align:center;
+    color:white;
+    margin-top:30px;
+    font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+
+<video id="bgVideo" autoplay loop playsinline>
+    <source src="chill.mp4" type="video/mp4">
+</video>
+
+<div class="container">
+
+<div class="header">
+    <h1>Tạo đề trắc nghiệm Not Free 😏 - @Nhat2007</h1>
+    <div class="creator">Create @Nhat2007 - Nguyễn Phi Nhật</div>
+</div>
+
+<div id="input-area">
+
+<textarea id="raw-text" placeholder="Dán đề trắc nghiệm vào đây theo chuẩn mẫu..."></textarea>
+
+<div style="margin-top:15px;text-align:center;">
+    <button class="btn" onclick="generateQuiz()">
+        Thực Thi Văn Bản
+    </button>
+</div>
+
+</div>
+
+<div class="topbar">
+
+<div class="stats">
+    Tổng câu: <span id="totalQuestion">0</span>
+    |
+    Đúng: <span id="correctAnswer">0</span>
+</div>
+
+<div class="buttons">
+
+    <button class="btn" onclick="reshuffleQuiz()">
+        Xáo trộn & Làm lại
+    </button>
+
+    <button class="btn gray" onclick="backToInput()">
+        Tạo Câu Hỏi Trắc Nghiệm
+    </button>
+
+    <button class="btn" onclick="toggleVideo()" id="videoBtn">
+        Tắt Nền
+    </button>
+
+    <button class="btn gray"
+    onclick="window.open('https://www.facebook.com/share/1DDpZ2iHQF/?mibextid=wwXIfr')">
+        Liên Hệ ADM
+    </button>
+
+</div>
+
+</div>
+
+<div id="quiz-container"></div>
+
+<div class="footer">
+    Create @Nhat2007 - Nguyễn Phi Nhật
+    <br><br>
+    Nếu gặp trách nhiệm pháp lý vui lòng liên hệ ADM
+</div>
+
+</div>
+
+<script>
+
+let defaultText = `
+1. Bạn Phải Đóm Chúa không
+*A. Phải
+B. Không Phải
+Lựa chon bởi con tim nghen sai là đỏ đấy
+`;
+
+let parsedQuestions = [];
+let correctCount = 0;
+
+const bgVideo=document.getElementById("bgVideo");
+const videoBtn=document.getElementById("videoBtn");
+
+bgVideo.volume=1;
+
+
+
+bgVideo.muted=true;
+
+bgVideo.play();
+
+document.body.addEventListener("click",()=>{
+
+    bgVideo.muted=false;
+
+    bgVideo.play();
+
+},{once:true});
+
+function toggleVideo(){
+
+    if(bgVideo.style.display==="none"){
+
+        bgVideo.style.display="block";
+
+        bgVideo.play();
+
+        videoBtn.innerText="Tắt Nền";
+
+    }
+
+    else{
+
+        bgVideo.style.display="none";
+
+        bgVideo.pause();
+
+        videoBtn.innerText="Bật Nền";
+
+    }
+
+}
+
+function shuffleArray(array){
+
+    for(let i=array.length-1;i>0;i--){
+
+        const j=Math.floor(Math.random()*(i+1));
+
+        [array[i],array[j]]=[array[j],array[i]];
+
+    }
+
+    return array;
+
+}
+
+function parseRawText(text){
+
+    const lines=text.split('\n');
+
+    let questions=[];
+
+    let currentQuestion=null;
+
+    lines.forEach(line=>{
+
+        let trimmed=line.trim();
+
+        if(!trimmed) return;
+
+        if(/^(#?\d+[\.\:\s])/.test(trimmed)){
+
+            if(currentQuestion){
+
+                questions.push(currentQuestion);
+
+            }
+
+            let cleanQ=trimmed.replace(/^(#?\d+[\.\:\s]\s*)/,'');
+
+            currentQuestion={
+                q:cleanQ,
+                arr:[]
+            };
+
+        }
+
+        else if(/^(\*?[A-E]\s*[\.\:\s])/.test(trimmed)){
+
+            if(currentQuestion){
+
+                currentQuestion.arr.push(trimmed);
+
+            }
+
+        }
+
+    });
+
+    if(currentQuestion){
+
+        questions.push(currentQuestion);
+
+    }
+
+    return questions;
+
+}
+
+function generateQuiz(){
+
+    const textInput=document.getElementById('raw-text').value;
+
+    if(!textInput.trim()){
+
+        alert("Vui lòng nhập đề");
+
+        return;
+
+    }
+
+    parsedQuestions=parseRawText(textInput);
+
+    buildQuizHTML();
+
+}
+
+function buildQuizHTML(){
+
+    const container=document.getElementById('quiz-container');
+
+    container.innerHTML="";
+
+    correctCount=0;
+
+    document.getElementById("correctAnswer").innerText=0;
+
+    const shuffledQuestions=shuffleArray([...parsedQuestions]);
+
+    document.getElementById("totalQuestion").innerText=shuffledQuestions.length;
+
+    shuffledQuestions.forEach((item,qIndex)=>{
+
+        const qBlock=document.createElement("div");
+
+        qBlock.className="question";
+
+        const qText=document.createElement("div");
+
+        qText.className="question-title";
+
+        qText.innerText=`Câu ${qIndex+1}: ${item.q}`;
+
+        qBlock.appendChild(qText);
+
+        let optionsData=item.arr.map(option=>{
+
+            let isCorrect=option.startsWith('*');
+
+            let cleanText=option.replace(/^\*?[A-E]\s*[\.\:\s]\s*/,'');
+
+            return{
+                text:cleanText,
+                isCorrect:isCorrect
+            };
+
+        });
+
+        optionsData=shuffleArray(optionsData);
+
+        const optionsList=document.createElement("div");
+
+        optionsList.className="options";
+
+        optionsData.forEach((opt)=>{
+
+            const optItem=document.createElement("label");
+
+            optItem.className="option";
+
+            if(opt.isCorrect){
+
+                optItem.classList.add("correct-target");
+
+            }
+
+            const radio=document.createElement("input");
+
+            radio.type="radio";
+
+            radio.name=`question_${qIndex}`;
+
+            const span=document.createElement("span");
+
+            span.innerText=opt.text;
+
+            optItem.appendChild(radio);
+
+            optItem.appendChild(span);
+
+            optItem.onclick=function(){
+
+                if(qBlock.classList.contains("answered")){
+
+                    return;
+
+                }
+
+                qBlock.classList.add("answered");
+
+                radio.checked=true;
+
+                const allOptions=optionsList.querySelectorAll(".option");
+
+                allOptions.forEach(li=>{
+
+                    li.style.pointerEvents="none";
+
+                    if(li.classList.contains("correct-target")){
+
+                        li.classList.add("correct");
+
+                    }
+
+                });
+
+                if(opt.isCorrect){
+
+                    correctCount++;
+
+                    document.getElementById("correctAnswer").innerText=correctCount;
+
+                }
+
+                else{
+
+                    optItem.classList.add("wrong");
+
+                }
+
+            };
+
+            optionsList.appendChild(optItem);
+
+        });
+
+        qBlock.appendChild(optionsList);
+
+        container.appendChild(qBlock);
+
+    });
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+function reshuffleQuiz(){
+
+    buildQuizHTML();
+
+}
+
+function backToInput(){
+
+    const area=document.getElementById("input-area");
+
+    if(area.style.display==="none" || area.style.display===""){
+
+        area.style.display="block";
+
+        document.getElementById("raw-text").value=defaultText;
+
+    }
+
+    else{
+
+        area.style.display="none";
+
+    }
+
+}
+
+window.onload=function(){
+
+    parsedQuestions=parseRawText(defaultText);
+
+    buildQuizHTML();
+
+};
+
+</script>
+
+</body>
+</html>
+```
