@@ -26,11 +26,12 @@
 
 body{
     font-family:Arial,sans-serif;
-    background:#000;
+    background:#ffffff;
     padding:20px;
     color:#222;
     overflow-x:hidden;
 }
+
 
 
 
@@ -314,6 +315,7 @@ document.body.addEventListener("click",()=>{
 
 },{once:true});
 
+
 function toggleVideo(){
 
     if(bgVideo.style.display==="none"){
@@ -321,6 +323,8 @@ function toggleVideo(){
         bgVideo.style.display="block";
 
         bgVideo.play();
+
+        document.body.style.background="#000";
 
         videoBtn.innerText="Tắt Nền";
 
@@ -332,11 +336,15 @@ function toggleVideo(){
 
         bgVideo.pause();
 
+        document.body.style.background="#ffffff";
+
         videoBtn.innerText="Bật Nền";
 
     }
 
 }
+
+
 
 function shuffleArray(array){
 
