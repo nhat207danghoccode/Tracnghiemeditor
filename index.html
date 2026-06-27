@@ -14,7 +14,6 @@
     --main-dark:#1d4ed8;
     --success:#22c55e;
     --error:#ef4444;
-    --bg:#f1f5f9;
     --dark:#111827;
 }
 
@@ -26,14 +25,11 @@
 
 body{
     font-family:Arial,sans-serif;
-    background:#ffffff;
+    background:url('suy.png') center center / cover no-repeat fixed;
     padding:20px;
     color:#222;
     overflow-x:hidden;
 }
-
-
-
 
 #bgVideo{
     position:fixed;
@@ -43,9 +39,8 @@ body{
     height:100%;
     object-fit:cover;
     z-index:-2;
+    display:none;
 }
-
-
 
 .container{
     max-width:1000px;
@@ -212,10 +207,8 @@ textarea{
 
 <body>
 
-
-
-<video id="bgVideo" autoplay loop playsinline>
-    <source src="chill.mp4" type="video/mp4">
+<video id='bgVideo' autoplay loop playsinline>
+    <source src='chill.mp4' type='video/mp4'>
 </video>
 
 <div class="container">
@@ -256,7 +249,7 @@ textarea{
     </button>
 
     <button class="btn" onclick="toggleVideo()" id="videoBtn">
-        Tắt Nền
+        Bật Nền
     </button>
 
     <button class="btn gray"
@@ -290,25 +283,17 @@ Lựa chon bởi con tim nghen sai là đỏ đấy
 let parsedQuestions = [];
 let correctCount = 0;
 
-const bgVideo=document.getElementById("bgVideo");
-const videoBtn=document.getElementById("videoBtn");
+const bgVideo=document.getElementById('bgVideo');
+const videoBtn=document.getElementById('videoBtn');
 
 bgVideo.volume=1;
-
-
-
 bgVideo.muted=true;
 
-bgVideo.play();
-
-document.body.addEventListener("click",()=>{
+document.body.addEventListener('click',()=>{
 
     bgVideo.muted=false;
 
-    bgVideo.play();
-
 },{once:true});
-
 
 function toggleVideo(){
 
@@ -330,15 +315,13 @@ function toggleVideo(){
 
         bgVideo.pause();
 
-        document.body.style.background="#ffffff";
+        document.body.style.background="url('suy.png') center center / cover no-repeat fixed";
 
         videoBtn.innerText="Bật Nền";
 
     }
 
 }
-
-
 
 function shuffleArray(array){
 
@@ -595,4 +578,4 @@ window.onload=function(){
 
 </body>
 </html>
-```
+
